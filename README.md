@@ -1,100 +1,109 @@
-# vinext-starter
+<div align="center" dir="rtl">
 
-A clean full-stack starter running on
-[vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
-Drizzle support.
+# מתכוננים לים 🌊
 
-## Prerequisites
+### תרגול אינטראקטיבי למבחן משיט 30
 
-- Node.js `>=22.13.0`
+מאגר שאלות מלא בעברית, משוב מיידי וחוויית תרגול שנבנתה גם לנייד.
 
-## Quick Start
+[**פתיחת האפליקציה**](https://mitkonenim-layam.sapirp.chatgpt.site)
+
+![React](https://img.shields.io/badge/React-19-149ECA?logo=react&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
+![Offline cache](https://img.shields.io/badge/Offline-cache-5A0FC8)
+![RTL](https://img.shields.io/badge/RTL-Hebrew-0B6E75)
+
+</div>
+
+---
+
+## על הפרויקט
+
+**מתכוננים לים** היא אפליקציית ווב לתרגול שאלות לקראת מבחן משיט 30. בוחרים נושא, עוברים על כל השאלות בסדר אקראי ומקבלים משוב מיד לאחר כל תשובה.
+
+התרגול מתחיל מחדש בכל רענון. בכל סשן משתנים גם סדר השאלות וגם סדר התשובות — בדומה למבחן אמיתי.
+
+## מה יש באפליקציה?
+
+- **909 שאלות ייחודיות** בשלושה נושאים
+- **179** שאלות מכונה
+- **285** שאלות ניווט ומכשירים
+- **445** שאלות ימאות
+- **202 תמונות מקוריות** המשולבות בשאלות
+- משוב מיידי: התשובה הנכונה מסומנת בירוק
+- ערבוב עצמאי של השאלות ושל אפשרויות התשובה בכל סשן
+- מעבר על כל השאלות בנושא ללא הגבלת כמות
+- הגדלת תמונה בנגיעה ותמיכה בטעינה עצלה
+- תמיכה מלאה בעברית ובכיוון RTL
+- התאמה ל־iPhone, ל־iPad ולמכשירי Android, כולל תצוגת רוחב ו־safe areas
+- יעדי מגע נגישים, משוב דביק ומניעת יציאה מקרית מתרגול
+- Service Worker לשמירת האפליקציה ותמונות השאלות לשימוש חוזר גם בחיבור חלש
+
+## איך זה עובד?
+
+1. בוחרים אחד משלושת נושאי הלימוד.
+2. האפליקציה מערבבת את כל השאלות ואת התשובות שלהן.
+3. בוחרים תשובה ורואים מיד אם היא נכונה.
+4. ממשיכים לשאלה הבאה עד לסיום כל המאגר בנושא.
+
+## הרצה מקומית
+
+### דרישות
+
+- Node.js `22.13.0` ומעלה
+- npm
+
+### התקנה
 
 ```bash
 npm install
 npm run dev
-npm run build
 ```
 
-This starter does not use `wrangler.jsonc`.
+האפליקציה תהיה זמינה בכתובת שמוצגת במסוף.
 
-## Included Shape
+### פקודות שימושיות
 
-- edit site code under `app/`
-- `.openai/hosting.json` declares optional Sites D1 and R2 bindings
-- `vite.config.ts` simulates declared bindings for local development
-- `db/schema.ts` starts intentionally empty
-- `examples/d1/` contains an optional D1 example surface
-- `drizzle.config.ts` supports local migration generation when needed
+| פקודה | תיאור |
+|---|---|
+| `npm run dev` | הפעלת סביבת פיתוח מקומית |
+| `npm run build` | יצירת build מוכן לפריסה |
+| `npm test` | בנייה והרצת בדיקות הפרויקט |
+| `npm run lint` | בדיקת איכות הקוד |
 
-## Workspace Auth Headers
+## מבנה הפרויקט
 
-Signed-in visitors receive both `oai-authenticated-user-id` and `oai-authenticated-user-email`. Private Sites require every visitor to sign in; public Sites may also have anonymous visitors, for whom neither header is present.
-
-The user ID is stable for the same user on the same Site and different across Sites. Email and name are intended for display or contact purposes.
-
-SIWC-authenticated workspace sites may also receive
-`oai-authenticated-user-full-name` when the user's SIWC profile has a non-empty
-`name` claim. The full-name value is percent-encoded UTF-8 and is accompanied by
-`oai-authenticated-user-full-name-encoding: percent-encoded-utf-8`.
-
-Treat the full name as optional and fall back to email when it is absent:
-
-```tsx
-import { headers } from "next/headers";
-
-export default async function Home() {
-  const requestHeaders = await headers();
-  const userId = requestHeaders.get("oai-authenticated-user-id");
-  const email = requestHeaders.get("oai-authenticated-user-email");
-  const encodedFullName = requestHeaders.get("oai-authenticated-user-full-name");
-  const fullName =
-    encodedFullName &&
-    requestHeaders.get("oai-authenticated-user-full-name-encoding") ===
-      "percent-encoded-utf-8"
-      ? decodeURIComponent(encodedFullName)
-      : null;
-
-  const displayName = fullName ?? email;
-  // ...
-}
+```text
+app/
+├── quiz-app.tsx       # לוגיקת התרגול והממשק
+├── questions.json     # מאגר 909 השאלות
+├── globals.css        # עיצוב רספונסיבי ואנימציות
+└── layout.tsx         # מעטפת האפליקציה ונתוני viewport
+public/
+├── question-images/   # תמונות השאלות
+├── tuna.png           # איור הטונה המונפש
+└── sw.js              # מטמון אופליין
+tests/                 # בדיקות רינדור
 ```
 
-## Optional Dispatch-Owned ChatGPT Sign-In
+## טכנולוגיות
 
-Import the ready-to-use helpers from `app/chatgpt-auth.ts` when the site needs
-optional or required ChatGPT sign-in:
+- [React 19](https://react.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [vinext](https://github.com/cloudflare/vinext)
+- [Vite](https://vite.dev/)
+- [Cloudflare Workers](https://developers.cloudflare.com/workers/)
 
-- Use `getChatGPTUser()` for optional signed-in UI.
-- Use `requireChatGPTUser(returnTo)` for server-rendered pages that should send
-  anonymous visitors through Sign in with ChatGPT.
-- Use `chatGPTSignInPath(returnTo)` and `chatGPTSignOutPath(returnTo)` for
-  browser links or actions.
-- Pass a same-origin relative `returnTo` path for the destination after sign-in
-  or sign-out. The helper validates and safely encodes it.
-- Mark protected pages with `export const dynamic = "force-dynamic"` because
-  they depend on per-request identity headers.
+## נתוני השאלות
 
-Dispatch owns `/signin-with-chatgpt`, `/signout-with-chatgpt`, `/callback`, the
-OAuth cookies, and identity header injection. Do not implement app routes for
-those reserved paths. Routes that do not import and call the helper remain
-anonymous-compatible.
+השאלות חולצו משלושה מסמכי Word. התשובה שסומנה ברקע ירוק במסמך המקור נשמרה כתשובה הנכונה, שאלות כפולות הוסרו ותמונות המקור נשמרו לצד השאלות.
 
-SIWC establishes identity only; it does not prove workspace membership. Use the
-Sites hosting platform's access policy controls for workspace-wide restrictions,
-or enforce explicit server-side membership or allowlist checks.
+> האפליקציה מיועדת לתרגול וללמידה ואינה אתר רשמי של רשות הספנות והנמלים.
 
-Use SIWC for account pages, user-specific dashboards, saved records, and write
-actions tied to the current ChatGPT user. Leave public content anonymous.
+---
 
-## Useful Commands
+<div align="center" dir="rtl">
 
-- `npm run dev`: start local development
-- `npm run build`: verify the vinext build output
-- `npm test`: build the starter and verify its rendered loading skeleton
-- `npm run db:generate`: generate Drizzle migrations after schema changes
+נבנה כדי להפוך את הדרך למבחן לקצת יותר ברורה — וקצת יותר קרובה לים.
 
-## Learn More
-
-- [vinext Documentation](https://github.com/cloudflare/vinext)
-- [Drizzle D1 Guide](https://orm.drizzle.team/docs/get-started/d1-new)
+</div>
