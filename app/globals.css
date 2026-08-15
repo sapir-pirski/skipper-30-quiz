@@ -31,3 +31,5 @@ nav,.quiz-header{height:92px;display:flex;align-items:center;justify-content:spa
 @keyframes bubbleRise{0%{opacity:0;transform:translate(0,8px) scale(.55)}18%{opacity:.8}100%{opacity:0;transform:translate(-18px,-82px) scale(1.15)}}
 @media(max-width:800px){.fish-scene{display:grid;width:min(78vw,330px);height:160px;justify-self:center;margin:-12px 0 18px}.tuna{filter:drop-shadow(0 10px 14px rgba(1,26,49,.28))}}
 @media(prefers-reduced-motion:reduce){.tuna{transform:none}.bubble{display:none}}
+.hero{min-height:430px}.hero-grid{min-height:430px}
+@media(max-width:800px){.hero-grid{min-height:330px}}
