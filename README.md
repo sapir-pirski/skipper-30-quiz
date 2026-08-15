@@ -1,12 +1,12 @@
-<div align="center" dir="rtl">
+<div align="center">
 
-# מתכוננים לים 🌊
+# Skipper 30 Quiz 🌊
 
-### תרגול אינטראקטיבי למבחן משיט 30
+### Interactive preparation for Israel's Skipper 30 exam
 
-מאגר שאלות מלא בעברית, משוב מיידי וחוויית תרגול שנבנתה גם לנייד.
+A complete Hebrew question bank with instant feedback and a mobile-first practice experience.
 
-[**פתיחת האפליקציה**](https://mitkonenim-layam.sapirp.chatgpt.site)
+[**Open the app**](https://mitkonenim-layam.sapirp.chatgpt.site)
 
 ![React](https://img.shields.io/badge/React-19-149ECA?logo=react&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
@@ -17,76 +17,77 @@
 
 ---
 
-## על הפרויקט
+## About
 
-**מתכוננים לים** היא אפליקציית ווב לתרגול שאלות לקראת מבחן משיט 30. בוחרים נושא, עוברים על כל השאלות בסדר אקראי ומקבלים משוב מיד לאחר כל תשובה.
+**Skipper 30 Quiz** is a web application for practicing questions for Israel's Skipper 30 exam. Choose a subject, work through every question in a randomized order, and receive immediate feedback after each answer.
 
-התרגול מתחיל מחדש בכל רענון. בכל סשן משתנים גם סדר השאלות וגם סדר התשובות — בדומה למבחן אמיתי.
+Progress resets whenever the page is refreshed. Both questions and answer choices are reshuffled for every new session to recreate the experience of a real exam.
 
-## מה יש באפליקציה?
+## Features
 
-- **909 שאלות ייחודיות** בשלושה נושאים
-- **179** שאלות מכונה
-- **285** שאלות ניווט ומכשירים
-- **445** שאלות ימאות
-- **202 תמונות מקוריות** המשולבות בשאלות
-- משוב מיידי: התשובה הנכונה מסומנת בירוק
-- ערבוב עצמאי של השאלות ושל אפשרויות התשובה בכל סשן
-- מעבר על כל השאלות בנושא ללא הגבלת כמות
-- הגדלת תמונה בנגיעה ותמיכה בטעינה עצלה
-- תמיכה מלאה בעברית ובכיוון RTL
-- התאמה ל־iPhone, ל־iPad ולמכשירי Android, כולל תצוגת רוחב ו־safe areas
-- יעדי מגע נגישים, משוב דביק ומניעת יציאה מקרית מתרגול
-- Service Worker לשמירת האפליקציה ותמונות השאלות לשימוש חוזר גם בחיבור חלש
+- **909 unique questions** across three subjects
+- **179** engine questions
+- **285** navigation and instruments questions
+- **445** seamanship questions
+- **202 original images** embedded in relevant questions
+- Immediate feedback with the correct answer highlighted in green
+- Independent question and answer randomization for every session
+- Unrestricted access to every question in the selected subject
+- Tap-to-enlarge question images with lazy loading
+- Complete Hebrew and right-to-left interface support
+- Responsive layouts for iPhone, iPad, and Android devices
+- Landscape orientation and safe-area support
+- Accessible touch targets, sticky feedback, and accidental-exit protection
+- Service Worker caching for repeat use on slow or interrupted connections
 
-## איך זה עובד?
+## How It Works
 
-1. בוחרים אחד משלושת נושאי הלימוד.
-2. האפליקציה מערבבת את כל השאלות ואת התשובות שלהן.
-3. בוחרים תשובה ורואים מיד אם היא נכונה.
-4. ממשיכים לשאלה הבאה עד לסיום כל המאגר בנושא.
+1. Select one of the three exam subjects.
+2. The app shuffles all questions and their answer choices.
+3. Select an answer and receive immediate feedback.
+4. Continue until you have completed the entire subject bank.
 
-## הרצה מקומית
+## Local Development
 
-### דרישות
+### Requirements
 
-- Node.js `22.13.0` ומעלה
+- Node.js `22.13.0` or later
 - npm
 
-### התקנה
+### Setup
 
 ```bash
 npm install
 npm run dev
 ```
 
-האפליקציה תהיה זמינה בכתובת שמוצגת במסוף.
+The development URL will be displayed in your terminal.
 
-### פקודות שימושיות
+### Commands
 
-| פקודה | תיאור |
+| Command | Description |
 |---|---|
-| `npm run dev` | הפעלת סביבת פיתוח מקומית |
-| `npm run build` | יצירת build מוכן לפריסה |
-| `npm test` | בנייה והרצת בדיקות הפרויקט |
-| `npm run lint` | בדיקת איכות הקוד |
+| `npm run dev` | Start the local development server |
+| `npm run build` | Create a production-ready build |
+| `npm test` | Build and run the project tests |
+| `npm run lint` | Check code quality |
 
-## מבנה הפרויקט
+## Project Structure
 
 ```text
 app/
-├── quiz-app.tsx       # לוגיקת התרגול והממשק
-├── questions.json     # מאגר 909 השאלות
-├── globals.css        # עיצוב רספונסיבי ואנימציות
-└── layout.tsx         # מעטפת האפליקציה ונתוני viewport
+├── quiz-app.tsx       # Quiz interface and application logic
+├── questions.json     # Complete 909-question bank
+├── globals.css        # Responsive styling and animations
+└── layout.tsx         # Application shell and viewport metadata
 public/
-├── question-images/   # תמונות השאלות
-├── tuna.png           # איור הטונה המונפש
-└── sw.js              # מטמון אופליין
-tests/                 # בדיקות רינדור
+├── question-images/   # Images used by the questions
+├── tuna.png           # Animated tuna illustration
+└── sw.js              # Offline cache service worker
+tests/                 # Rendering tests
 ```
 
-## טכנולוגיות
+## Technology
 
 - [React 19](https://react.dev/)
 - [TypeScript](https://www.typescriptlang.org/)
@@ -94,16 +95,16 @@ tests/                 # בדיקות רינדור
 - [Vite](https://vite.dev/)
 - [Cloudflare Workers](https://developers.cloudflare.com/workers/)
 
-## נתוני השאלות
+## Question Data
 
-השאלות חולצו משלושה מסמכי Word. התשובה שסומנה ברקע ירוק במסמך המקור נשמרה כתשובה הנכונה, שאלות כפולות הוסרו ותמונות המקור נשמרו לצד השאלות.
+The question bank was extracted from three Word documents. Answers highlighted with a green background in the source documents were recorded as correct. Duplicate questions were removed, and the original question images were preserved.
 
-> האפליקציה מיועדת לתרגול וללמידה ואינה אתר רשמי של רשות הספנות והנמלים.
+> This application is an independent study aid and is not an official website of Israel's Shipping and Ports Administration.
 
 ---
 
-<div align="center" dir="rtl">
+<div align="center">
 
-נבנה כדי להפוך את הדרך למבחן לקצת יותר ברורה — וקצת יותר קרובה לים.
+Built to make the path to the exam clearer—and bring you a little closer to the sea.
 
 </div>
