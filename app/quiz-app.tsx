@@ -10,9 +10,9 @@ type History = Record<string, { attempts: number; correct: number; lastCorrect: 
 
 const QUESTIONS = bank.questions as Question[];
 const TOPICS: { id: TopicId; number: string; name: string; description: string; accent: string }[] = [
-  { id: "engine", number: "01", name: "מכונה", description: "מערכות מנוע, משאבות ותחזוקה", accent: "#e86d4a" },
-  { id: "navigation", number: "02", name: "ניווט ומכשירים", description: "מפות, קשר ומכשירי ניווט", accent: "#d6a846" },
-  { id: "seamanship", number: "03", name: "ימאות", description: "חוקי דרך, מפרשנות, מזג אוויר ובטיחות", accent: "#4f9694" },
+  { id: "engine", number: "01", name: "מכונה", description: "מערכות מנוע, משאבות ותחזוקה", accent: "#087ebc" },
+  { id: "navigation", number: "02", name: "ניווט ומכשירים", description: "מפות, קשר ומכשירי ניווט", accent: "#2c94c4" },
+  { id: "seamanship", number: "03", name: "ימאות", description: "חוקי דרך, מפרשנות, מזג אוויר ובטיחות", accent: "#19a7a0" },
 ];
 
 function shuffle<T>(items: T[]): T[] {
@@ -80,7 +80,7 @@ export default function QuizApp() {
         <div className="quiz-meta"><span>{current.topicName}</span><b>{index + 1} / {session.length}</b></div>
       </header>
       <div className="progress-track" aria-label={`התקדמות ${Math.round(progress)} אחוז`}><span style={{ width: `${progress}%` }} /></div>
-      <section className="question-card">
+      <section className="question-card" key={current.id}>
         <div className="question-kicker"><span>שאלה {index + 1}</span><span>{score} נכונות</span></div>
         <h1>{current.question}</h1>
         {!!current.images.length && <div className={`image-gallery images-${Math.min(current.images.length, 5)}`}>{current.images.map((image, imageIndex) => <img key={`${image}-${imageIndex}`} src={image} alt={`איור לשאלה ${index + 1}, תמונה ${imageIndex + 1}`} />)}</div>}
