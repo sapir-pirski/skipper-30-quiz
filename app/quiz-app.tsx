@@ -35,7 +35,6 @@ export default function QuizApp() {
   const [score, setScore] = useState(0);
   const [sessionWrong, setSessionWrong] = useState<string[]>([]);
   const [mode, setMode] = useState<"all" | "wrong" | "new">("all");
-  const [length, setLength] = useState<10 | 20 | 0>(10);
 
   useEffect(() => {
     try { setHistory(JSON.parse(localStorage.getItem("sea-quiz-history") || "{}")); } catch { /* ignore invalid local data */ }
@@ -48,8 +47,6 @@ export default function QuizApp() {
   }, []);
 
   const current = session[index];
-  const totalAnswered = Object.keys(history).length;
-  const totalCorrect = Object.values(history).filter((item) => item.lastCorrect).length;
 
   const candidatesFor = useCallback((topicId: TopicId, practiceMode = mode) => {
     const topicQuestions = QUESTIONS.filter((question) => question.topic === topicId);
@@ -61,7 +58,7 @@ export default function QuizApp() {
   const start = (topicId: TopicId, requestedMode = mode, onlyIds?: string[]) => {
     let pool = onlyIds ? QUESTIONS.filter((question) => onlyIds.includes(question.id)) : candidatesFor(topicId, requestedMode);
     if (!pool.length) pool = QUESTIONS.filter((question) => question.topic === topicId);
-    const nextSession = shuffle(pool).slice(0, length || pool.length);
+    const nextSession = shuffle(pool).slice(0, 10);
     setTopic(topicId); setSession(nextSession); setIndex(0); setScore(0); setSessionWrong([]); setSelected(null);
     setAnswers(shuffle(nextSession[0]?.answers || [])); setScreen("quiz");
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -133,17 +130,13 @@ export default function QuizApp() {
 
   return <main>
     <section className="hero"><nav><div className="brand"><span className="brand-mark">מ</span><span>מתכוננים לים</span></div><span className="nav-note">תרגול משיט 30</span></nav>
-      <div className="hero-grid"><div className="hero-copy"><span className="eyebrow">השאלות האמיתיות. בקצב שלך.</span><h1>כל הדרך<br />אל <em>הים.</em></h1><p>תרגול ממוקד מתוך 909 שאלות בשלושת נושאי הבחינה. משוב מיידי, התקדמות שנשמרת, וחזרה חכמה על טעויות.</p><a href="#topics" className="primary hero-cta">לבחירת נושא <span>↓</span></a></div>
+      <div className="hero-grid"><div className="hero-copy"><span className="eyebrow">השאלות האמיתיות. בקצב שלך.</span><h1>כל הדרך<br />אל <em>הים.</em></h1><a href="#topics" className="primary hero-cta">לבחירת נושא <span>↓</span></a></div>
         <div className="compass" aria-hidden="true"><div className="compass-ring"><span className="north">צ</span><span className="east">מז</span><span className="south">ד</span><span className="west">מע</span><i /></div><span className="compass-caption">מוכנים לצאת לדרך?</span></div>
       </div><div className="wave-line" aria-hidden="true" />
     </section>
-    <section className="topics-section" id="topics"><div className="section-heading"><div><span className="eyebrow">שלושה נתיבים לבחירה</span><h2>מאיפה מתחילים?</h2></div><p>בחרו נושא, הגדירו את אורך התרגול וצאו לדרך. סדר השאלות והתשובות משתנה בכל פעם.</p></div>
-      <div className="controls"><div className="segmented" aria-label="סוג תרגול"><button className={mode === "all" ? "active" : ""} onClick={() => setMode("all")}>כל השאלות</button><button className={mode === "new" ? "active" : ""} onClick={() => setMode("new")}>טרם נענו</button><button className={mode === "wrong" ? "active" : ""} onClick={() => setMode("wrong")}>טעויות בלבד</button></div>
-        <label>מספר שאלות<select value={length} onChange={(event) => setLength(Number(event.target.value) as 10 | 20 | 0)}><option value={10}>10 שאלות</option><option value={20}>20 שאלות</option><option value={0}>כל המאגר</option></select></label>
-      </div>
+    <section className="topics-section" id="topics"><div className="section-heading"><h2>מאיפה מתחילים?</h2></div>
+      <div className="controls"><div className="segmented" aria-label="סוג תרגול"><button className={mode === "all" ? "active" : ""} onClick={() => setMode("all")}>כל השאלות</button><button className={mode === "new" ? "active" : ""} onClick={() => setMode("new")}>טרם נענו</button><button className={mode === "wrong" ? "active" : ""} onClick={() => setMode("wrong")}>טעויות בלבד</button></div></div>
       <div className="topic-grid">{TOPICS.map((item) => { const stats = topicStats[item.id]; const available = candidatesFor(item.id).length; return <article className="topic-card" key={item.id} style={{ "--accent": item.accent } as React.CSSProperties}><div className="topic-top"><span className="topic-number">{item.number}</span><span className="topic-count">{stats.total} שאלות</span></div><div><h3>{item.name}</h3><p>{item.description}</p></div><div className="topic-progress"><div><span>התקדמות</span><b>{stats.answered}/{stats.total}</b></div><div className="mini-track"><span style={{ width: `${(stats.answered / stats.total) * 100}%` }} /></div></div><button className="topic-button" onClick={() => start(item.id)} disabled={!available}>התחלת תרגול <span>←</span></button></article>; })}</div>
     </section>
-    <section className="stats-strip"><div><b>909</b><span>שאלות ייחודיות</span></div><div><b>202</b><span>איורים מקוריים</span></div><div><b>{totalAnswered}</b><span>שאלות שענית</span></div><div><b>{totalCorrect}</b><span>תשובות נכונות לאחרונה</span></div></section>
-    <footer><span>מתכוננים לים</span><span>ההתקדמות נשמרת במכשיר הזה</span></footer>
   </main>;
 }
