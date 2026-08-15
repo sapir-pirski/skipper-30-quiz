@@ -117,7 +117,7 @@ export default function QuizApp() {
 
   return <main>
     <section className="hero">
-      <div className="hero-grid"><div className="hero-copy"><span className="eyebrow">השאלות האמיתיות. בקצב שלך.</span><h1>כל הדרך<br />אל <em>הים.</em></h1><a href="#topics" className="primary hero-cta">לבחירת נושא <span>↓</span></a></div>
+      <div className="hero-grid"><div className="hero-copy"><h1>כל הדרך<br />אל <em>הים.</em></h1></div>
         <div className="fish-scene" aria-hidden="true"><span className="bubble bubble-one" /><span className="bubble bubble-two" /><span className="bubble bubble-three" /><img className="tuna" src="/tuna.png" alt="" /></div>
       </div><div className="wave-line" aria-hidden="true" />
     </section>

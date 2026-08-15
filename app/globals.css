@@ -33,3 +33,5 @@ nav,.quiz-header{height:92px;display:flex;align-items:center;justify-content:spa
 @media(prefers-reduced-motion:reduce){.tuna{transform:none}.bubble{display:none}}
 .hero{min-height:430px}.hero-grid{min-height:430px}
 @media(max-width:800px){.hero-grid{min-height:330px}}
+.hero{min-height:360px}.hero-grid{min-height:360px}.hero-copy{padding:20px 0}
+@media(max-width:800px){.hero-grid{min-height:300px}.hero-copy{padding:28px 0}}
