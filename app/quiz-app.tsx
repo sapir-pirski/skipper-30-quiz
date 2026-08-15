@@ -58,7 +58,7 @@ export default function QuizApp() {
   const start = (topicId: TopicId, requestedMode = mode, onlyIds?: string[]) => {
     let pool = onlyIds ? QUESTIONS.filter((question) => onlyIds.includes(question.id)) : candidatesFor(topicId, requestedMode);
     if (!pool.length) pool = QUESTIONS.filter((question) => question.topic === topicId);
-    const nextSession = shuffle(pool).slice(0, 10);
+    const nextSession = shuffle(pool);
     setTopic(topicId); setSession(nextSession); setIndex(0); setScore(0); setSessionWrong([]); setSelected(null);
     setAnswers(shuffle(nextSession[0]?.answers || [])); setScreen("quiz");
     window.scrollTo({ top: 0, behavior: "smooth" });
