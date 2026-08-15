@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import bank from "./questions.json";
 
 type Answer = { text: string; correct: boolean };
@@ -34,29 +34,16 @@ export default function QuizApp() {
   const [selected, setSelected] = useState<number | null>(null);
   const [score, setScore] = useState(0);
   const [sessionWrong, setSessionWrong] = useState<string[]>([]);
-  const [mode, setMode] = useState<"all" | "wrong" | "new">("all");
 
   useEffect(() => {
-    try { setHistory(JSON.parse(localStorage.getItem("sea-quiz-history") || "{}")); } catch { /* ignore invalid local data */ }
+    localStorage.removeItem("sea-quiz-history");
     if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => undefined);
-  }, []);
-
-  const saveHistory = useCallback((next: History) => {
-    setHistory(next);
-    localStorage.setItem("sea-quiz-history", JSON.stringify(next));
   }, []);
 
   const current = session[index];
 
-  const candidatesFor = useCallback((topicId: TopicId, practiceMode = mode) => {
-    const topicQuestions = QUESTIONS.filter((question) => question.topic === topicId);
-    if (practiceMode === "wrong") return topicQuestions.filter((question) => history[question.id] && !history[question.id].lastCorrect);
-    if (practiceMode === "new") return topicQuestions.filter((question) => !history[question.id]);
-    return topicQuestions;
-  }, [history, mode]);
-
-  const start = (topicId: TopicId, requestedMode = mode, onlyIds?: string[]) => {
-    let pool = onlyIds ? QUESTIONS.filter((question) => onlyIds.includes(question.id)) : candidatesFor(topicId, requestedMode);
+  const start = (topicId: TopicId, onlyIds?: string[]) => {
+    let pool = onlyIds ? QUESTIONS.filter((question) => onlyIds.includes(question.id)) : QUESTIONS.filter((question) => question.topic === topicId);
     if (!pool.length) pool = QUESTIONS.filter((question) => question.topic === topicId);
     const nextSession = shuffle(pool);
     setTopic(topicId); setSession(nextSession); setIndex(0); setScore(0); setSessionWrong([]); setSelected(null);
@@ -70,7 +57,7 @@ export default function QuizApp() {
     const isCorrect = answers[answerIndex].correct;
     if (isCorrect) setScore((value) => value + 1); else setSessionWrong((ids) => [...ids, current.id]);
     const old = history[current.id] || { attempts: 0, correct: 0, lastCorrect: false };
-    saveHistory({ ...history, [current.id]: { attempts: old.attempts + 1, correct: old.correct + (isCorrect ? 1 : 0), lastCorrect: isCorrect } });
+    setHistory({ ...history, [current.id]: { attempts: old.attempts + 1, correct: old.correct + (isCorrect ? 1 : 0), lastCorrect: isCorrect } });
   };
 
   const next = () => {
@@ -123,7 +110,7 @@ export default function QuizApp() {
         <div className="score-ring" style={{ "--score": `${percent * 3.6}deg` } as React.CSSProperties}><div><b>{percent}%</b><span>{score} מתוך {session.length}</span></div></div>
         <h1>{percent >= 80 ? "עבודה מצוינת." : percent >= 60 ? "כיוון טוב." : "ממשיכים לתרגל."}</h1>
         <p>{sessionWrong.length ? `${sessionWrong.length} שאלות מחכות לסיבוב תיקון קצר.` : "ענית נכון על כל השאלות בתרגול הזה."}</p>
-        <div className="summary-actions">{!!sessionWrong.length && <button className="primary" onClick={() => start(topic, "all", sessionWrong)}>תרגול טעויות <span>←</span></button>}<button className="secondary" onClick={() => start(topic)}>סיבוב חדש</button><button className="text-button" onClick={() => setScreen("home")}>בחירת נושא אחר</button></div>
+        <div className="summary-actions">{!!sessionWrong.length && <button className="primary" onClick={() => start(topic, sessionWrong)}>תרגול טעויות <span>←</span></button>}<button className="secondary" onClick={() => start(topic)}>סיבוב חדש</button><button className="text-button" onClick={() => setScreen("home")}>בחירת נושא אחר</button></div>
       </section>
     </main>;
   }
@@ -135,8 +122,7 @@ export default function QuizApp() {
       </div><div className="wave-line" aria-hidden="true" />
     </section>
     <section className="topics-section" id="topics"><div className="section-heading"><h2>מאיפה מתחילים?</h2></div>
-      <div className="controls"><div className="segmented" aria-label="סוג תרגול"><button className={mode === "all" ? "active" : ""} onClick={() => setMode("all")}>כל השאלות</button><button className={mode === "new" ? "active" : ""} onClick={() => setMode("new")}>טרם נענו</button><button className={mode === "wrong" ? "active" : ""} onClick={() => setMode("wrong")}>טעויות בלבד</button></div></div>
-      <div className="topic-grid">{TOPICS.map((item) => { const stats = topicStats[item.id]; const available = candidatesFor(item.id).length; return <article className="topic-card" key={item.id} style={{ "--accent": item.accent } as React.CSSProperties}><div className="topic-top"><span className="topic-number">{item.number}</span><span className="topic-count">{stats.total} שאלות</span></div><div><h3>{item.name}</h3><p>{item.description}</p></div><div className="topic-progress"><div><span>התקדמות</span><b>{stats.answered}/{stats.total}</b></div><div className="mini-track"><span style={{ width: `${(stats.answered / stats.total) * 100}%` }} /></div></div><button className="topic-button" onClick={() => start(item.id)} disabled={!available}>התחלת תרגול <span>←</span></button></article>; })}</div>
+      <div className="topic-grid">{TOPICS.map((item) => { const stats = topicStats[item.id]; return <article className="topic-card" key={item.id} style={{ "--accent": item.accent } as React.CSSProperties}><div className="topic-top"><span className="topic-number">{item.number}</span><span className="topic-count">{stats.total} שאלות</span></div><div><h3>{item.name}</h3><p>{item.description}</p></div><div className="topic-progress"><div><span>התקדמות</span><b>{stats.answered}/{stats.total}</b></div><div className="mini-track"><span style={{ width: `${(stats.answered / stats.total) * 100}%` }} /></div></div><button className="topic-button" onClick={() => start(item.id)}>התחלת תרגול <span>←</span></button></article>; })}</div>
     </section>
   </main>;
 }
