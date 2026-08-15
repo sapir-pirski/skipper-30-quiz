@@ -34,13 +34,37 @@ export default function QuizApp() {
   const [selected, setSelected] = useState<number | null>(null);
   const [score, setScore] = useState(0);
   const [sessionWrong, setSessionWrong] = useState<string[]>([]);
+  const [zoomImage, setZoomImage] = useState<string | null>(null);
 
   useEffect(() => {
     localStorage.removeItem("sea-quiz-history");
-    if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => undefined);
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("/sw.js").then(() => navigator.serviceWorker.ready).then((registration) => {
+        const imageUrls = [...new Set(QUESTIONS.flatMap((question) => question.images))];
+        registration.active?.postMessage({ type: "CACHE_QUESTION_IMAGES", urls: imageUrls });
+      }).catch(() => undefined);
+    }
   }, []);
 
+  useEffect(() => {
+    if (screen !== "quiz") return;
+    const protectActiveQuiz = (event: BeforeUnloadEvent) => { event.preventDefault(); event.returnValue = ""; };
+    window.addEventListener("beforeunload", protectActiveQuiz);
+    return () => window.removeEventListener("beforeunload", protectActiveQuiz);
+  }, [screen]);
+
+  useEffect(() => {
+    if (!zoomImage) return;
+    const closeOnEscape = (event: KeyboardEvent) => { if (event.key === "Escape") setZoomImage(null); };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [zoomImage]);
+
   const current = session[index];
+
+  const leaveQuiz = () => {
+    if (window.confirm("לצאת מהתרגול? ההתקדמות בסבב הנוכחי תאבד.")) setScreen("home");
+  };
 
   const start = (topicId: TopicId, onlyIds?: string[]) => {
     let pool = onlyIds ? QUESTIONS.filter((question) => onlyIds.includes(question.id)) : QUESTIONS.filter((question) => question.topic === topicId);
@@ -76,14 +100,14 @@ export default function QuizApp() {
     const progress = ((index + (selected !== null ? 1 : 0)) / session.length) * 100;
     return <main className="quiz-shell">
       <header className="quiz-header">
-        <button className="brand compact" onClick={() => setScreen("home")} aria-label="חזרה למסך הבית"><span className="brand-mark">מ</span><span>מתכוננים לים</span></button>
+        <button className="brand compact" onClick={leaveQuiz} aria-label="יציאה מהתרגול וחזרה למסך הבית"><span className="brand-mark">מ</span><span>מתכוננים לים</span></button>
         <div className="quiz-meta"><span>{current.topicName}</span><b>{index + 1} / {session.length}</b></div>
       </header>
       <div className="progress-track" aria-label={`התקדמות ${Math.round(progress)} אחוז`}><span style={{ width: `${progress}%` }} /></div>
       <section className="question-card" key={current.id}>
         <div className="question-kicker"><span>שאלה {index + 1}</span><span>{score} נכונות</span></div>
         <h1>{current.question}</h1>
-        {!!current.images.length && <div className={`image-gallery images-${Math.min(current.images.length, 5)}`}>{current.images.map((image, imageIndex) => <img key={`${image}-${imageIndex}`} src={image} alt={`איור לשאלה ${index + 1}, תמונה ${imageIndex + 1}`} />)}</div>}
+        {!!current.images.length && <div className={`image-gallery images-${Math.min(current.images.length, 5)}`}>{current.images.map((image, imageIndex) => <button className="image-zoom-button" key={`${image}-${imageIndex}`} onClick={() => setZoomImage(image)} aria-label={`הגדלת איור ${imageIndex + 1}`}><img src={image} alt={`איור לשאלה ${index + 1}, תמונה ${imageIndex + 1}`} loading="lazy" decoding="async" /></button>)}</div>}
         <div className="answers" role="group" aria-label="תשובות אפשריות">
           {answers.map((answer, answerIndex) => {
             const revealed = selected !== null;
@@ -99,6 +123,7 @@ export default function QuizApp() {
           <button className="primary" onClick={next}>{index + 1 === session.length ? "לסיכום" : "לשאלה הבאה"}<span>←</span></button>
         </div>}
       </section>
+      {zoomImage && <div className="image-lightbox" role="dialog" aria-modal="true" aria-label="תצוגת איור מוגדלת" onClick={() => setZoomImage(null)}><button className="lightbox-close" onClick={() => setZoomImage(null)} aria-label="סגירת התמונה">×</button><img src={zoomImage} alt="איור מוגדל" onClick={(event) => event.stopPropagation()} /></div>}
     </main>;
   }
 

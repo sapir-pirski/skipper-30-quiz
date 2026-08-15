@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   appleWebApp: { capable: true, title: "מתכוננים לים", statusBarStyle: "black-translucent" },
 };
 
-export const viewport: Viewport = { themeColor: "#102d36", width: "device-width", initialScale: 1 };
+export const viewport: Viewport = { themeColor: "#063b66", width: "device-width", initialScale: 1, viewportFit: "cover" };
 
 export default function RootLayout({
   children,
