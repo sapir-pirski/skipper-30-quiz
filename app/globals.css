@@ -1,4 +1,5 @@
 @import "tailwindcss";
+/* v14: refresh the compiled stylesheet after repairing the mobile offline cache. */
 :root{--navy:#063b66;--ink:#082b45;--cream:#f4e9d8;--paper:#fff;--teal:#19a7a0;--blue:#087ebc;--sky:#75c9e8;--coral:#f06f5c;--mint:#ddf4f2;--line:rgba(8,43,69,.16)}
 *,*::before,*::after{box-sizing:border-box;font-family:Arial,sans-serif!important}html{scroll-behavior:smooth}body{margin:0;background:var(--cream);color:var(--ink)}button,select{font:inherit}button,a{-webkit-tap-highlight-color:transparent}button:focus-visible,a:focus-visible,select:focus-visible{outline:3px solid #d6a846;outline-offset:3px}
 .hero{min-height:720px;background:var(--navy);color:var(--cream);position:relative;overflow:hidden;padding:0 7vw}.hero:before{content:"";position:absolute;inset:0;opacity:.09;background-image:linear-gradient(rgba(255,255,255,.35) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.35) 1px,transparent 1px);background-size:72px 72px;mask-image:linear-gradient(to left,#000,transparent 70%)}
