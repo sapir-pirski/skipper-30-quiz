@@ -15,6 +15,8 @@ A complete Hebrew question bank with instant feedback and a mobile-first practic
 
 </div>
 
+![Skipper 30 Quiz home screen](docs/app-preview.jpg)
+
 ---
 
 ## About
