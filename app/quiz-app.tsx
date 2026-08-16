@@ -2,13 +2,16 @@
 
 import { useEffect, useMemo, useState } from "react";
 import bank from "./questions.json";
+import russianBank from "./questions.ru.json";
 
 type Answer = { text: string; correct: boolean };
 type TopicId = "engine" | "navigation" | "seamanship";
 type Question = { id: string; topic: TopicId; topicName: string; topicDescription: string; question: string; answers: Answer[]; images: string[] };
 type History = Record<string, { attempts: number; correct: number; lastCorrect: boolean }>;
+type RussianTranslation = { question: string; answers: Record<string, string> };
 
 const QUESTIONS = bank.questions as Question[];
+const RUSSIAN_TRANSLATIONS = russianBank as Record<string, RussianTranslation>;
 const TOPICS: { id: TopicId; number: string; name: string; description: string; accent: string }[] = [
   { id: "engine", number: "01", name: "מכונה", description: "מערכות מנוע, משאבות ותחזוקה", accent: "#087ebc" },
   { id: "navigation", number: "02", name: "ניווט ומכשירים", description: "מפות, קשר ומכשירי ניווט", accent: "#2c94c4" },
@@ -98,6 +101,7 @@ export default function QuizApp() {
 
   if (screen === "quiz" && current) {
     const progress = ((index + (selected !== null ? 1 : 0)) / session.length) * 100;
+    const russian = RUSSIAN_TRANSLATIONS[current.id];
     return <main className="quiz-shell">
       <header className="quiz-header">
         <button className="brand compact" onClick={leaveQuiz} aria-label="יציאה מהתרגול וחזרה למסך הבית"><span className="brand-mark">מ</span><span>מתכוננים לים</span></button>
@@ -118,6 +122,14 @@ export default function QuizApp() {
             </button>;
           })}
         </div>
+        {russian && <details className="russian-help">
+          <summary>Перевод на русский</summary>
+          <div className="russian-help-content" lang="ru" dir="ltr">
+            <h2>{russian.question}</h2>
+            <ol>{answers.map((answer) => <li key={answer.text}>{russian.answers[answer.text]}</li>)}</ol>
+            <p>Перевод приведён только для понимания вопроса. Выберите ответ выше.</p>
+          </div>
+        </details>}
         {selected !== null && <div className={`feedback ${answers[selected].correct ? "is-correct" : "is-wrong"}`} role="status">
           <div><b>{answers[selected].correct ? "בדיוק!" : "כמעט. התשובה הנכונה מסומנת בירוק."}</b><span>{answers[selected].correct ? "ממשיכים לצבור תנופה." : "נפגוש את השאלה שוב בתרגול הטעויות."}</span></div>
           <button className="primary" onClick={next}>{index + 1 === session.length ? "לסיכום" : "לשאלה הבאה"}<span>←</span></button>
