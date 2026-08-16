@@ -127,7 +127,6 @@ export default function QuizApp() {
           <div className="russian-help-content" lang="ru" dir="ltr">
             <h2>{russian.question}</h2>
             <ol>{answers.map((answer) => <li key={answer.text}>{russian.answers[answer.text]}</li>)}</ol>
-            <p>Перевод приведён только для понимания вопроса. Выберите ответ выше.</p>
           </div>
         </details>}
         {selected !== null && <div className={`feedback ${answers[selected].correct ? "is-correct" : "is-wrong"}`} role="status">
