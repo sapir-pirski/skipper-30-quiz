@@ -122,6 +122,9 @@ export default function QuizApp() {
             </button>;
           })}
         </div>
+        {selected !== null && <div className="next-action">
+          <button className="primary" onClick={next}>{index + 1 === session.length ? "לסיכום" : "לשאלה הבאה"}<span>←</span></button>
+        </div>}
         {russian && <details className="russian-help">
           <summary>Перевод на русский</summary>
           <div className="russian-help-content" lang="ru" dir="ltr">
@@ -129,9 +132,6 @@ export default function QuizApp() {
             <ol>{answers.map((answer) => <li key={answer.text}>{russian.answers[answer.text]}</li>)}</ol>
           </div>
         </details>}
-        {selected !== null && <div className="next-action">
-          <button className="primary" onClick={next}>{index + 1 === session.length ? "לסיכום" : "לשאלה הבאה"}<span>←</span></button>
-        </div>}
       </section>
       {zoomImage && <div className="image-lightbox" role="dialog" aria-modal="true" aria-label="תצוגת איור מוגדלת" onClick={() => setZoomImage(null)}><button className="lightbox-close" onClick={() => setZoomImage(null)} aria-label="סגירת התמונה">×</button><img src={zoomImage} alt="איור מוגדל" onClick={(event) => event.stopPropagation()} /></div>}
     </main>;
