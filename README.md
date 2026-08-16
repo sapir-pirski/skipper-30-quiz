@@ -4,7 +4,7 @@
 
 ### Interactive preparation for Israel's Skipper 30 exam
 
-A complete Hebrew question bank with Russian translation help and a mobile-first practice experience.
+A complete Hebrew question bank with Russian and English translation help and a mobile-first practice experience.
 
 [**Open the app**](https://mitkonenim-layam.sapirp.chatgpt.site)
 
@@ -13,6 +13,7 @@ A complete Hebrew question bank with Russian translation help and a mobile-first
 ![Offline cache](https://img.shields.io/badge/Offline-cache-5A0FC8)
 ![RTL](https://img.shields.io/badge/RTL-Hebrew-0B6E75)
 ![Russian help](https://img.shields.io/badge/Help-Russian-13A7A1)
+![English help](https://img.shields.io/badge/Help-English-087EBC)
 
 </div>
 
@@ -22,7 +23,7 @@ A complete Hebrew question bank with Russian translation help and a mobile-first
 
 ## About
 
-**Skipper 30 Quiz** is a web application for practicing questions for Israel's Skipper 30 exam. Choose a subject, work through every question in a randomized order, and use an optional Russian translation beneath each question when needed.
+**Skipper 30 Quiz** is a web application for practicing questions for Israel's Skipper 30 exam. Choose a subject, work through every question in a randomized order, and use optional Russian or English translations beneath each question when needed.
 
 Progress resets whenever the page is refreshed. Questions and answer choices are shuffled once at the beginning of each new session. Their order remains stable while navigating backward and forward through that session.
 
@@ -34,7 +35,7 @@ Progress resets whenever the page is refreshed. Questions and answer choices are
 - **445** seamanship questions
 - **202 original images** embedded in relevant questions
 - Correct and incorrect answers highlighted immediately after selection
-- Optional, non-interactive Russian translations for all questions and answers
+- Optional, non-interactive Russian and English translations for all questions and answers
 - Previous and Next navigation available throughout a session
 - Selected answers and answer order preserved when revisiting questions
 - Independent question and answer randomization at the start of every session
@@ -50,7 +51,7 @@ Progress resets whenever the page is refreshed. Questions and answer choices are
 
 1. Select one of the three exam subjects.
 2. The app shuffles all questions and their answer choices once for that session.
-3. Open **Перевод на русский** when Russian translation help is useful.
+3. Open **Перевод на русский** or **Translation to English** when translation help is useful.
 4. Select an answer to reveal whether it is correct.
 5. Use Previous and Next to move through the stable session order.
 6. Continue until you have completed the entire subject bank.
@@ -86,6 +87,7 @@ The development URL will be displayed in your terminal.
 app/
 ├── quiz-app.tsx       # Quiz interface and application logic
 ├── questions.json     # Complete 909-question bank
+├── questions.en.json  # English question and answer translations
 ├── questions.ru.json  # Russian question and answer translations
 ├── globals.css        # Responsive styling and animations
 └── layout.tsx         # Application shell and viewport metadata
@@ -93,9 +95,9 @@ public/
 ├── question-images/   # Images used by the questions
 ├── tuna.png           # Animated tuna illustration
 └── sw.js              # Offline cache service worker
-tests/                 # Rendering tests
+tests/                 # Rendering and translation coverage tests
 scripts/
-└── translate_questions.mjs # Regenerate Russian translations
+└── translate_questions.mjs # Regenerate Russian or English translations
 ```
 
 ## Technology
@@ -110,7 +112,7 @@ scripts/
 
 The question bank was extracted from three Word documents. Answers highlighted with a green background in the source documents were recorded as correct. Duplicate questions were removed, and the original question images were preserved.
 
-Russian translations are stored in `app/questions.ru.json`, keyed by question ID and the original Hebrew answer text. To regenerate them, run `node scripts/translate_questions.mjs`. This sends the Hebrew question bank to Google Translate and replaces the translation file, so review the resulting nautical terminology before publishing.
+Translations are stored in `app/questions.ru.json` and `app/questions.en.json`, keyed by question ID and the original Hebrew answer text. Regenerate Russian with `node scripts/translate_questions.mjs` and English with `node scripts/translate_questions.mjs en`. These commands send the Hebrew question bank to Google Translate and replace the selected translation file, so review the resulting nautical terminology before publishing.
 
 > This application is an independent study aid and is not an official website of Israel's Shipping and Ports Administration.
 
