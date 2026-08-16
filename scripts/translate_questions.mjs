@@ -3,6 +3,13 @@ import { readFile, writeFile } from "node:fs/promises";
 const source = JSON.parse(await readFile(new URL("../app/questions.json", import.meta.url), "utf8"));
 const outputUrl = new URL("../app/questions.ru.json", import.meta.url);
 
+function capitalizeRussianSentences(text) {
+  return text.replace(
+    /(^|[.!?…](?:["'»”’)\]]*)\s+)([а-яё])/gu,
+    (_, prefix, letter) => `${prefix}${letter.toLocaleUpperCase("ru-RU")}`,
+  );
+}
+
 async function translate(text) {
   const url = new URL("https://translate.googleapis.com/translate_a/single");
   url.search = new URLSearchParams({ client: "gtx", sl: "iw", tl: "ru", dt: "t", q: text });
@@ -11,7 +18,7 @@ async function translate(text) {
       const response = await fetch(url);
       if (response.ok) {
         const body = await response.json();
-        return body[0].map((part) => part[0]).join("");
+        return capitalizeRussianSentences(body[0].map((part) => part[0]).join(""));
       }
     } catch (error) {
       if (attempt === 4) throw error;
