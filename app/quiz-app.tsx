@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import bank from "./questions.json";
+import englishBank from "./questions.en.json";
 import russianBank from "./questions.ru.json";
 
 type Answer = { text: string; correct: boolean };
@@ -12,6 +13,7 @@ type History = Record<string, { attempts: number; correct: number; lastCorrect: 
 type RussianTranslation = { question: string; answers: Record<string, string> };
 
 const QUESTIONS = bank.questions as Question[];
+const ENGLISH_TRANSLATIONS = englishBank as Record<string, RussianTranslation>;
 const RUSSIAN_TRANSLATIONS = russianBank as Record<string, RussianTranslation>;
 const TOPICS: { id: TopicId; number: string; name: string; description: string; accent: string }[] = [
   { id: "engine", number: "01", name: "מכונה", description: "מערכות מנוע, משאבות ותחזוקה", accent: "#087ebc" },
@@ -112,6 +114,7 @@ export default function QuizApp() {
 
   if (screen === "quiz" && current) {
     const progress = ((index + (selected !== null ? 1 : 0)) / session.length) * 100;
+    const english = ENGLISH_TRANSLATIONS[current.id];
     const russian = RUSSIAN_TRANSLATIONS[current.id];
     return <main className="quiz-shell">
       <header className="quiz-header">
@@ -141,6 +144,13 @@ export default function QuizApp() {
           <div className="russian-help-content" lang="ru" dir="ltr">
             <h2>{russian.question}</h2>
             <ol>{answers.map((answer) => <li key={answer.text}>{russian.answers[answer.text]}</li>)}</ol>
+          </div>
+        </details>}
+        {english && <details className="russian-help">
+          <summary>Translation to English</summary>
+          <div className="russian-help-content" lang="en" dir="ltr">
+            <h2>{english.question}</h2>
+            <ol>{answers.map((answer) => <li key={answer.text}>{english.answers[answer.text]}</li>)}</ol>
           </div>
         </details>}
       </section>
