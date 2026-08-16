@@ -109,7 +109,6 @@ export default function QuizApp() {
       </header>
       <div className="progress-track" aria-label={`התקדמות ${Math.round(progress)} אחוז`}><span style={{ width: `${progress}%` }} /></div>
       <section className="question-card" key={current.id}>
-        <div className="question-kicker"><span>שאלה {index + 1}</span><span>{score} נכונות</span></div>
         <h1>{current.question}</h1>
         {!!current.images.length && <div className={`image-gallery images-${Math.min(current.images.length, 5)}`}>{current.images.map((image, imageIndex) => <button className="image-zoom-button" key={`${image}-${imageIndex}`} onClick={() => setZoomImage(image)} aria-label={`הגדלת איור ${imageIndex + 1}`}><img src={image} alt={`איור לשאלה ${index + 1}, תמונה ${imageIndex + 1}`} loading="lazy" decoding="async" /></button>)}</div>}
         <div className="answers" role="group" aria-label="תשובות אפשריות">
