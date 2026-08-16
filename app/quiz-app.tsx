@@ -35,6 +35,7 @@ export default function QuizApp() {
   const [index, setIndex] = useState(0);
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [selected, setSelected] = useState<number | null>(null);
+  const [sessionSelections, setSessionSelections] = useState<Record<string, number>>({});
   const [score, setScore] = useState(0);
   const [sessionWrong, setSessionWrong] = useState<string[]>([]);
   const [zoomImage, setZoomImage] = useState<string | null>(null);
@@ -73,7 +74,7 @@ export default function QuizApp() {
     let pool = onlyIds ? QUESTIONS.filter((question) => onlyIds.includes(question.id)) : QUESTIONS.filter((question) => question.topic === topicId);
     if (!pool.length) pool = QUESTIONS.filter((question) => question.topic === topicId);
     const nextSession = shuffle(pool);
-    setTopic(topicId); setSession(nextSession); setIndex(0); setScore(0); setSessionWrong([]); setSelected(null);
+    setTopic(topicId); setSession(nextSession); setIndex(0); setScore(0); setSessionWrong([]); setSessionSelections({}); setSelected(null);
     setAnswers(shuffle(nextSession[0]?.answers || [])); setScreen("quiz");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -81,18 +82,27 @@ export default function QuizApp() {
   const choose = (answerIndex: number) => {
     if (selected !== null || !current) return;
     setSelected(answerIndex);
+    setSessionSelections((selections) => ({ ...selections, [current.id]: current.answers.indexOf(answers[answerIndex]) }));
     const isCorrect = answers[answerIndex].correct;
     if (isCorrect) setScore((value) => value + 1); else setSessionWrong((ids) => [...ids, current.id]);
     const old = history[current.id] || { attempts: 0, correct: 0, lastCorrect: false };
     setHistory({ ...history, [current.id]: { attempts: old.attempts + 1, correct: old.correct + (isCorrect ? 1 : 0), lastCorrect: isCorrect } });
   };
 
-  const next = () => {
-    if (index + 1 >= session.length) { setScreen("summary"); window.scrollTo({ top: 0, behavior: "smooth" }); return; }
-    const nextIndex = index + 1;
-    setIndex(nextIndex); setSelected(null); setAnswers(shuffle(session[nextIndex].answers));
+  const goTo = (nextIndex: number) => {
+    const nextAnswers = shuffle(session[nextIndex].answers);
+    const savedAnswerIndex = sessionSelections[session[nextIndex].id];
+    const savedAnswer = savedAnswerIndex === undefined ? null : session[nextIndex].answers[savedAnswerIndex];
+    setIndex(nextIndex); setAnswers(nextAnswers); setSelected(savedAnswer ? nextAnswers.indexOf(savedAnswer) : null);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  const next = () => {
+    if (index + 1 >= session.length) { setScreen("summary"); window.scrollTo({ top: 0, behavior: "smooth" }); return; }
+    goTo(index + 1);
+  };
+
+  const previous = () => { if (index > 0) goTo(index - 1); };
 
   const topicStats = useMemo(() => Object.fromEntries(TOPICS.map((item) => {
     const questions = QUESTIONS.filter((question) => question.topic === item.id);
@@ -121,9 +131,10 @@ export default function QuizApp() {
             </button>;
           })}
         </div>
-        {selected !== null && <div className="next-action">
+        <div className="question-nav">
+          <button className="secondary" onClick={previous} disabled={index === 0}>לשאלה הקודמת <span>→</span></button>
           <button className="primary" onClick={next}>{index + 1 === session.length ? "לסיכום" : "לשאלה הבאה"}<span>←</span></button>
-        </div>}
+        </div>
         {russian && <details className="russian-help">
           <summary>Перевод на русский</summary>
           <div className="russian-help-content" lang="ru" dir="ltr">
