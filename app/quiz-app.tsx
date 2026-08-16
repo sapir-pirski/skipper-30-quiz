@@ -7,6 +7,7 @@ import russianBank from "./questions.ru.json";
 type Answer = { text: string; correct: boolean };
 type TopicId = "engine" | "navigation" | "seamanship";
 type Question = { id: string; topic: TopicId; topicName: string; topicDescription: string; question: string; answers: Answer[]; images: string[] };
+type SessionQuestion = Question & { sessionAnswers: Answer[] };
 type History = Record<string, { attempts: number; correct: number; lastCorrect: boolean }>;
 type RussianTranslation = { question: string; answers: Record<string, string> };
 
@@ -31,7 +32,7 @@ export default function QuizApp() {
   const [screen, setScreen] = useState<"home" | "quiz" | "summary">("home");
   const [history, setHistory] = useState<History>({});
   const [topic, setTopic] = useState<TopicId | null>(null);
-  const [session, setSession] = useState<Question[]>([]);
+  const [session, setSession] = useState<SessionQuestion[]>([]);
   const [index, setIndex] = useState(0);
   const [answers, setAnswers] = useState<Answer[]>([]);
   const [selected, setSelected] = useState<number | null>(null);
@@ -73,9 +74,9 @@ export default function QuizApp() {
   const start = (topicId: TopicId, onlyIds?: string[]) => {
     let pool = onlyIds ? QUESTIONS.filter((question) => onlyIds.includes(question.id)) : QUESTIONS.filter((question) => question.topic === topicId);
     if (!pool.length) pool = QUESTIONS.filter((question) => question.topic === topicId);
-    const nextSession = shuffle(pool);
+    const nextSession = shuffle(pool).map((question) => ({ ...question, sessionAnswers: shuffle(question.answers) }));
     setTopic(topicId); setSession(nextSession); setIndex(0); setScore(0); setSessionWrong([]); setSessionSelections({}); setSelected(null);
-    setAnswers(shuffle(nextSession[0]?.answers || [])); setScreen("quiz");
+    setAnswers(nextSession[0]?.sessionAnswers || []); setScreen("quiz");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -90,7 +91,7 @@ export default function QuizApp() {
   };
 
   const goTo = (nextIndex: number) => {
-    const nextAnswers = shuffle(session[nextIndex].answers);
+    const nextAnswers = session[nextIndex].sessionAnswers;
     const savedAnswerIndex = sessionSelections[session[nextIndex].id];
     const savedAnswer = savedAnswerIndex === undefined ? null : session[nextIndex].answers[savedAnswerIndex];
     setIndex(nextIndex); setAnswers(nextAnswers); setSelected(savedAnswer ? nextAnswers.indexOf(savedAnswer) : null);
