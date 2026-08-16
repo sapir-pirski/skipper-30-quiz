@@ -129,8 +129,7 @@ export default function QuizApp() {
             <ol>{answers.map((answer) => <li key={answer.text}>{russian.answers[answer.text]}</li>)}</ol>
           </div>
         </details>}
-        {selected !== null && <div className={`feedback ${answers[selected].correct ? "is-correct" : "is-wrong"}`} role="status">
-          <div><b>{answers[selected].correct ? "בדיוק!" : "כמעט. התשובה הנכונה מסומנת בירוק."}</b><span>{answers[selected].correct ? "ממשיכים לצבור תנופה." : "נפגוש את השאלה שוב בתרגול הטעויות."}</span></div>
+        {selected !== null && <div className="next-action">
           <button className="primary" onClick={next}>{index + 1 === session.length ? "לסיכום" : "לשאלה הבאה"}<span>←</span></button>
         </div>}
       </section>
