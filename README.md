@@ -25,20 +25,20 @@ A complete Hebrew question bank with Russian and English translation help and a 
 
 **Skipper 30 Quiz** is a web application for practicing questions for Israel's Skipper 30 exam. Choose a subject, work through every question in a randomized order, and use optional Russian or English translations beneath each question when needed.
 
-Progress resets whenever the page is refreshed. Questions and answer choices are shuffled once at the beginning of each new session. Their order remains stable while navigating backward and forward through that session.
+Progress resets whenever the page is refreshed. Questions are shuffled once at the beginning of each new session. Answer choices are also shuffled, except for questions whose answers refer to their original letter positions or to labeled elements in an image. Their order remains stable while navigating backward and forward through that session.
 
 ## Features
 
-- **909 unique questions** across three subjects
-- **179** engine questions
-- **285** navigation and instruments questions
-- **445** seamanship questions
-- **202 original images** embedded in relevant questions
+- **814 unique questions** across three subjects
+- **177** engine questions
+- **264** navigation and instruments questions
+- **373** seamanship questions
+- **142 unique question images** referenced by the current bank
 - Correct and incorrect answers highlighted immediately after selection
 - Optional, non-interactive Russian and English translations for all questions and answers
 - Previous and Next navigation available throughout a session
 - Selected answers and answer order preserved when revisiting questions
-- Independent question and answer randomization at the start of every session
+- Independent question and answer randomization at the start of every session, with source order preserved for 25 order-dependent questions
 - Unrestricted access to every question in the selected subject
 - Tap-to-enlarge question images with lazy loading
 - Complete Hebrew and right-to-left interface support
@@ -50,7 +50,7 @@ Progress resets whenever the page is refreshed. Questions and answer choices are
 ## How It Works
 
 1. Select one of the three exam subjects.
-2. The app shuffles all questions and their answer choices once for that session.
+2. The app shuffles all questions and most answer choices once for that session. Order-dependent answers retain their source order.
 3. Open **Перевод на русский** or **Translation to English** when translation help is useful.
 4. Select an answer to reveal whether it is correct.
 5. Use Previous and Next to move through the stable session order.
@@ -86,7 +86,7 @@ The development URL will be displayed in your terminal.
 ```text
 app/
 ├── quiz-app.tsx       # Quiz interface and application logic
-├── questions.json     # Complete 909-question bank
+├── questions.json     # Complete 814-question bank
 ├── questions.en.json  # English question and answer translations
 ├── questions.ru.json  # Russian question and answer translations
 ├── globals.css        # Responsive styling and animations

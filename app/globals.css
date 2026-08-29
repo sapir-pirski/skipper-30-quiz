@@ -45,3 +45,4 @@ nav,.quiz-header{height:92px;display:flex;align-items:center;justify-content:spa
 @media(max-width:800px){.question-nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.question-nav .primary,.question-nav .secondary{width:100%;min-width:0;padding-right:10px;padding-left:10px;gap:10px}}
 @media(orientation:landscape) and (max-height:520px){.hero{min-height:280px}.hero-grid{min-height:280px}.hero h1{font-size:52px}.fish-scene{height:170px;width:min(34vw,310px)}.topics-section{padding-top:24px}.quiz-header{height:58px}.question-card{margin-top:22px;padding-top:24px}}
 @media(min-width:801px) and (max-width:1180px){.hero-grid{max-width:960px}.topic-grid{gap:14px}.topic-card{padding:20px}.question-card{max-width:min(900px,88vw)}}
+.question-card h1{white-space:pre-line}
