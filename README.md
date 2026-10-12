@@ -23,22 +23,23 @@ A complete Hebrew question bank with Russian and English translation help and a 
 
 ## About
 
-**Skipper 30 Quiz** is a web application for practicing questions for Israel's Skipper 30 exam. Choose a subject, work through every question in a randomized order, and use optional Russian or English translations beneath each question when needed.
+**Skipper 30 Quiz** is a web application for practicing questions for Israel's Skipper 30 exam. Choose a subject, work through every question (theory topics are randomized; practical preparation follows the source document), and use optional Russian or English translations beneath each question when needed.
 
-Progress resets whenever the page is refreshed. Questions are shuffled once at the beginning of each new session. Answer choices are also shuffled, except for questions whose answers refer to their original letter positions or to labeled elements in an image. Their order remains stable while navigating backward and forward through that session.
+Progress resets whenever the page is refreshed. The three theory topics shuffle questions once at the beginning of each new session. Practical preparation always follows the document order, including the relative order in mistake retries. Answer choices are also shuffled, except for questions whose answers refer to their original letter positions or to labeled elements in an image. Their order remains stable while navigating backward and forward through that session.
 
 ## Features
 
-- **814 unique questions** across three subjects
+- **1,024 questions** across four subjects
 - **177** engine questions
 - **264** navigation and instruments questions
 - **373** seamanship questions
-- **142 unique question images** referenced by the current bank
+- **210** practical-preparation questions (הכנה למעשי), in document order
+- **171 unique question images** referenced by the current bank
 - Correct and incorrect answers highlighted immediately after selection
 - Optional, non-interactive Russian and English translations for all questions and answers
 - Previous and Next navigation available throughout a session
 - Selected answers and answer order preserved when revisiting questions
-- Independent question and answer randomization at the start of every session, with source order preserved for 25 order-dependent questions
+- Answer randomization at the start of each session, with source order preserved for 49 order-dependent questions (25 existing and 24 practical)
 - Unrestricted access to every question in the selected subject
 - Tap-to-enlarge question images with lazy loading
 - Complete Hebrew and right-to-left interface support
@@ -49,8 +50,8 @@ Progress resets whenever the page is refreshed. Questions are shuffled once at t
 
 ## How It Works
 
-1. Select one of the three exam subjects.
-2. The app shuffles all questions and most answer choices once for that session. Order-dependent answers retain their source order.
+1. Select one of the four exam subjects.
+2. The app keeps practical questions in document order and shuffles theory questions. Most answer choices shuffle once per session; order-dependent choices retain their source order.
 3. Open **Перевод на русский** or **Translation to English** when translation help is useful.
 4. Select an answer to reveal whether it is correct.
 5. Use Previous and Next to move through the stable session order.
@@ -85,8 +86,9 @@ The development URL will be displayed in your terminal.
 
 ```text
 app/
-├── quiz-app.tsx       # Quiz interface and application logic
-├── questions.json     # Complete 814-question bank
+├── quiz-app.tsx        # Quiz interface and application logic
+├── quiz-session.ts     # Topic configuration and session ordering
+├── questions.json     # Complete 1,024-question bank
 ├── questions.en.json  # English question and answer translations
 ├── questions.ru.json  # Russian question and answer translations
 ├── globals.css        # Responsive styling and animations
@@ -97,6 +99,7 @@ public/
 └── sw.js              # Offline cache service worker
 tests/                 # Rendering and translation coverage tests
 scripts/
+├── import_practical_questions.py # Import or verify the practical DOCX
 └── translate_questions.mjs # Regenerate Russian or English translations
 ```
 
@@ -110,7 +113,11 @@ scripts/
 
 ## Question Data
 
-The question bank was extracted from three Word documents. Answers highlighted with a green background in the source documents were recorded as correct. Duplicate questions were removed, and the original question images were preserved.
+The question bank was extracted from four Word documents. Answers highlighted with a green background in the source documents were recorded as correct. Duplicate questions were removed from the three theory topics. All 210 practical questions are retained in source order, including the two three-choice questions and 29 original illustrations. The practical importer reads numbered question paragraphs and green shading (`#92D050`), because both questions and correct answers can be bold.
+
+Import practical preparation with `python3 scripts/import_practical_questions.py "/path/to/qa maasi.docx"`. This updates only the practical topic and its image assets. Add `--check` to verify the stored questions and image bytes against the document without changing files. Ambiguous answer markings stop the import instead of dropping questions.
+
+The practical question data carries `sourceIndex` and `preserveAnswerOrder`. All 24 questions with letter-dependent choices preserve the entire answer list, even when the dependent choice is incorrect. Practical English/Russian help uses numbered choice references to match the translated lists.
 
 Translations are stored in `app/questions.ru.json` and `app/questions.en.json`, keyed by question ID and the original Hebrew answer text. Regenerate Russian with `node scripts/translate_questions.mjs` and English with `node scripts/translate_questions.mjs en`. These commands send the Hebrew question bank to Google Translate and replace the selected translation file, so review the resulting nautical terminology before publishing.
 

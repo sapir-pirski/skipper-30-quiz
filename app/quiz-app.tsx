@@ -4,41 +4,14 @@ import { useEffect, useMemo, useState } from "react";
 import bank from "./questions.json";
 import englishBank from "./questions.en.json";
 import russianBank from "./questions.ru.json";
+import { buildSession, TOPICS, type Answer, type Question, type SessionQuestion, type TopicId } from "./quiz-session";
 
-type Answer = { text: string; correct: boolean };
-type TopicId = "engine" | "navigation" | "seamanship";
-type Question = { id: string; topic: TopicId; topicName: string; topicDescription: string; question: string; answers: Answer[]; images: string[] };
-type SessionQuestion = Question & { sessionAnswers: Answer[] };
 type History = Record<string, { attempts: number; correct: number; lastCorrect: boolean }>;
 type RussianTranslation = { question: string; answers: Record<string, string> };
 
 const QUESTIONS = bank.questions as Question[];
 const ENGLISH_TRANSLATIONS = englishBank as Record<string, RussianTranslation>;
 const RUSSIAN_TRANSLATIONS = russianBank as Record<string, RussianTranslation>;
-const ORDER_DEPENDENT_QUESTION_IDS = new Set([
-  "engine-122",
-  "navigation-3", "navigation-13", "navigation-15", "navigation-21", "navigation-24",
-  "navigation-61", "navigation-86", "navigation-89", "navigation-154", "navigation-178",
-  "navigation-186", "navigation-187", "navigation-254", "navigation-267", "navigation-268",
-  "navigation-270",
-  "seamanship-6", "seamanship-21", "seamanship-145", "seamanship-271", "seamanship-311",
-  "seamanship-319", "seamanship-325", "seamanship-467",
-]);
-const TOPICS: { id: TopicId; number: string; name: string; description: string; accent: string }[] = [
-  { id: "engine", number: "01", name: "מכונה", description: "מערכות מנוע, משאבות ותחזוקה", accent: "#087ebc" },
-  { id: "navigation", number: "02", name: "ניווט ומכשירים", description: "מפות, קשר ומכשירי ניווט", accent: "#2c94c4" },
-  { id: "seamanship", number: "03", name: "ימאות", description: "חוקי דרך, מפרשנות, מזג אוויר ובטיחות", accent: "#19a7a0" },
-];
-
-function shuffle<T>(items: T[]): T[] {
-  const result = [...items];
-  for (let index = result.length - 1; index > 0; index--) {
-    const next = Math.floor(Math.random() * (index + 1));
-    [result[index], result[next]] = [result[next], result[index]];
-  }
-  return result;
-}
-
 export default function QuizApp() {
   const [screen, setScreen] = useState<"home" | "quiz" | "summary">("home");
   const [history, setHistory] = useState<History>({});
@@ -83,12 +56,7 @@ export default function QuizApp() {
   };
 
   const start = (topicId: TopicId, onlyIds?: string[]) => {
-    let pool = onlyIds ? QUESTIONS.filter((question) => onlyIds.includes(question.id)) : QUESTIONS.filter((question) => question.topic === topicId);
-    if (!pool.length) pool = QUESTIONS.filter((question) => question.topic === topicId);
-    const nextSession = shuffle(pool).map((question) => ({
-      ...question,
-      sessionAnswers: ORDER_DEPENDENT_QUESTION_IDS.has(question.id) ? [...question.answers] : shuffle(question.answers),
-    }));
+    const nextSession = buildSession(QUESTIONS, topicId, onlyIds);
     setTopic(topicId); setSession(nextSession); setIndex(0); setScore(0); setSessionWrong([]); setSessionSelections({}); setSelected(null);
     setAnswers(nextSession[0]?.sessionAnswers || []); setScreen("quiz");
     window.scrollTo({ top: 0, behavior: "smooth" });
