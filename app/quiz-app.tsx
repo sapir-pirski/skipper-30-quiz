@@ -158,7 +158,7 @@ export default function QuizApp() {
       </div><div className="wave-line" aria-hidden="true" />
     </section>
     <section className="topics-section" id="topics">
-      <div className="topic-grid">{TOPICS.map((item) => { const stats = topicStats[item.id]; return <article className="topic-card" key={item.id} style={{ "--accent": item.accent } as React.CSSProperties}><div className="topic-top"><span className="topic-number">{item.number}</span><span className="topic-count">{stats.total} שאלות</span></div><div><h3>{item.name}</h3><p>{item.description}</p></div><div className="topic-progress"><div><span>התקדמות</span><b>{stats.answered}/{stats.total}</b></div><div className="mini-track"><span style={{ width: `${(stats.answered / stats.total) * 100}%` }} /></div></div><button className="topic-button" onClick={() => start(item.id)}>התחלת תרגול <span>←</span></button></article>; })}</div>
+      <div className="topic-grid">{TOPICS.map((item) => { const stats = topicStats[item.id]; return <article className="topic-card" key={item.id} style={{ "--accent": item.accent } as React.CSSProperties}><div className="topic-top"><span className="topic-number">{item.number}</span><span className="topic-count">{stats.total} שאלות</span></div><div><h3 dir="auto">{item.name}</h3><p>{item.description}</p></div><div className="topic-progress"><div><span>התקדמות</span><b>{stats.answered}/{stats.total}</b></div><div className="mini-track"><span style={{ width: `${(stats.answered / stats.total) * 100}%` }} /></div></div><button className="topic-button" onClick={() => start(item.id)}>התחלת תרגול <span>←</span></button></article>; })}</div>
     </section>
   </main>;
 }

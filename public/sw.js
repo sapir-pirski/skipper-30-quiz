@@ -1,4 +1,4 @@
-const CACHE="sea-quiz-v15";
+const CACHE="sea-quiz-v16";
 
 self.addEventListener("install",event=>{
   self.skipWaiting();

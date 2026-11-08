@@ -1,5 +1,5 @@
 export type Answer = { text: string; correct: boolean };
-export type TopicId = "engine" | "navigation" | "seamanship" | "practical";
+export type TopicId = "engine" | "navigation" | "seamanship" | "practical" | "gmdss";
 export type Question = {
   id: string;
   topic: TopicId;
@@ -27,6 +27,7 @@ export const TOPICS: Topic[] = [
   { id: "navigation", number: "02", name: "ניווט ומכשירים", description: "מפות, קשר ומכשירי ניווט", accent: "#2c94c4", questionOrder: "random" },
   { id: "seamanship", number: "03", name: "ימאות", description: "חוקי דרך, מפרשנות, מזג אוויר ובטיחות", accent: "#19a7a0", questionOrder: "random" },
   { id: "practical", number: "04", name: "הכנה למעשי", description: "הכרת היאכטה, תמרונים והכנה למבחן המעשי", accent: "#c47530", questionOrder: "source" },
+  { id: "gmdss", number: "05", name: "GMDSS", description: "קשר ימי, תקשורת מצוקה ומערכות בטיחות", accent: "#7161a8", questionOrder: "source" },
 ];
 
 // Preserve the existing subjects' audited exceptions. New questions carry their

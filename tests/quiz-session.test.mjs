@@ -12,8 +12,8 @@ const lockedIndices = [13, 16, 20, 26, 34, 59, 67, 68, 72, 74, 84, 94, 97, 103, 
 test("the fourth topic contains every source question, including both three-choice questions", () => {
   assert.equal(TOPICS[3].id, "practical");
   assert.equal(TOPICS[3].number, "04");
-  assert.equal(bank.questions.length, 1024);
-  assert.deepEqual(bank.counts, { engine: 177, navigation: 264, seamanship: 373, practical: 210 });
+  assert.equal(bank.questions.length, 1240);
+  assert.deepEqual(bank.counts, { engine: 177, navigation: 264, seamanship: 373, practical: 210, gmdss: 216 });
   assert.deepEqual(practical.map((q) => q.sourceIndex), indices);
   assert.deepEqual(practical.map((q) => q.id), indices.map((n) => `practical-${n}`));
   assert.equal(new Set(bank.questions.map((q) => q.id)).size, bank.questions.length);
