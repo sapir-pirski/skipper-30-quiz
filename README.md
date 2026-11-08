@@ -1,8 +1,8 @@
 <div align="center">
 
-# Skipper 30 Quiz 🌊
+# Skipper 30 and 60 Quiz 🌊
 
-### Interactive preparation for Israel's Skipper 30 exam
+### Interactive preparation for Israel's Skipper 30 and 60 exams
 
 A complete Hebrew question bank with Russian and English translation help and a mobile-first practice experience.
 
@@ -17,13 +17,13 @@ A complete Hebrew question bank with Russian and English translation help and a 
 
 </div>
 
-![Skipper 30 Quiz home screen with animated tuna](docs/app-preview.png)
+![Skipper quiz home screen with animated tuna](docs/app-preview.png)
 
 ---
 
 ## About
 
-**Skipper 30 Quiz** is a web application for practicing questions for Israel's Skipper 30 exam. Choose a subject, work through every question (theory topics are randomized; practical preparation and GMDSS follow their source documents), and use optional Russian or English translations beneath each question when needed.
+**Skipper 30 and 60 Quiz** is a web application for practicing questions for Israel's Skipper 30 and 60 exams. Sections 01–04 cover Skipper 30; section 05, GMDSS, covers Skipper 60. The home banner names both exams, and each subject card displays its exam level in its accent color. Choose a subject, work through every question (theory topics are randomized; practical preparation and GMDSS follow their source documents), and use optional Russian or English translations beneath each question when needed.
 
 Progress resets whenever the page is refreshed. The three theory topics shuffle questions once at the beginning of each new session. Practical preparation and GMDSS always follow document order, including the relative order in mistake retries. Answer choices are also shuffled, except for questions whose answers refer to their original letter positions, preceding choices, or labeled elements in an image. Their order remains stable while navigating backward and forward through that session.
 
@@ -34,7 +34,7 @@ Progress resets whenever the page is refreshed. The three theory topics shuffle 
 - **264** navigation and instruments questions
 - **373** seamanship questions
 - **210** practical-preparation questions (הכנה למעשי), in document order
-- **216** GMDSS questions, in document order, with a violet section 05 card
+- **216** GMDSS questions for Skipper 60, in document order, with a violet section 05 card and exam badge
 - **171 unique question images** referenced by the current bank
 - Correct and incorrect answers highlighted immediately after selection
 - Optional, non-interactive Russian and English translations for all questions and answers
@@ -51,7 +51,7 @@ Progress resets whenever the page is refreshed. The three theory topics shuffle 
 
 ## How It Works
 
-1. Select one of the five exam subjects.
+1. Select one of the five subjects using its Skipper 30 or Skipper 60 badge.
 2. The app keeps practical and GMDSS questions in document order and shuffles theory questions. Most answer choices shuffle once per session; order-dependent choices retain their source order.
 3. Open **Перевод на русский** or **Translation to English** when translation help is useful.
 4. Select an answer to reveal whether it is correct.

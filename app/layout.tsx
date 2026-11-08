@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "מתכוננים לים",
-  description: "תרגול שאלות משיט לפי נושא, עם משוב מיידי והתקדמות אישית.",
+  description: "תרגול למבחני משיט 30 ו־60 לפי נושא, עם משוב מיידי, התקדמות אישית ותרגום לאנגלית ולרוסית.",
   manifest: "/manifest.webmanifest",
   icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
   appleWebApp: { capable: true, title: "מתכוננים לים", statusBarStyle: "black-translucent" },

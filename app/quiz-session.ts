@@ -16,6 +16,7 @@ export type SessionQuestion = Question & { sessionAnswers: Answer[] };
 type Topic = {
   id: TopicId;
   number: string;
+  exam: 30 | 60;
   name: string;
   description: string;
   accent: string;
@@ -23,11 +24,11 @@ type Topic = {
 };
 
 export const TOPICS: Topic[] = [
-  { id: "engine", number: "01", name: "מכונה", description: "מערכות מנוע, משאבות ותחזוקה", accent: "#087ebc", questionOrder: "random" },
-  { id: "navigation", number: "02", name: "ניווט ומכשירים", description: "מפות, קשר ומכשירי ניווט", accent: "#2c94c4", questionOrder: "random" },
-  { id: "seamanship", number: "03", name: "ימאות", description: "חוקי דרך, מפרשנות, מזג אוויר ובטיחות", accent: "#19a7a0", questionOrder: "random" },
-  { id: "practical", number: "04", name: "הכנה למעשי", description: "הכרת היאכטה, תמרונים והכנה למבחן המעשי", accent: "#c47530", questionOrder: "source" },
-  { id: "gmdss", number: "05", name: "GMDSS", description: "קשר ימי, תקשורת מצוקה ומערכות בטיחות", accent: "#7161a8", questionOrder: "source" },
+  { id: "engine", number: "01", exam: 30, name: "מכונה", description: "מערכות מנוע, משאבות ותחזוקה", accent: "#087ebc", questionOrder: "random" },
+  { id: "navigation", number: "02", exam: 30, name: "ניווט ומכשירים", description: "מפות, קשר ומכשירי ניווט", accent: "#2c94c4", questionOrder: "random" },
+  { id: "seamanship", number: "03", exam: 30, name: "ימאות", description: "חוקי דרך, מפרשנות, מזג אוויר ובטיחות", accent: "#19a7a0", questionOrder: "random" },
+  { id: "practical", number: "04", exam: 30, name: "הכנה למעשי", description: "הכרת היאכטה, תמרונים והכנה למבחן המעשי", accent: "#c47530", questionOrder: "source" },
+  { id: "gmdss", number: "05", exam: 60, name: "GMDSS", description: "קשר ימי, תקשורת מצוקה ומערכות בטיחות", accent: "#7161a8", questionOrder: "source" },
 ];
 
 // Preserve the existing subjects' audited exceptions. New questions carry their

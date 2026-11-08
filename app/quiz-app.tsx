@@ -153,12 +153,12 @@ export default function QuizApp() {
 
   return <main>
     <section className="hero">
-      <div className="hero-grid"><div className="hero-copy"><span className="exam-badge">הכנה למבחן משיט 30</span><h1>כל הדרך<br />אל <em>הים.</em></h1></div>
+      <div className="hero-grid"><div className="hero-copy"><span className="exam-badge">הכנה למבחני משיט 30 ו־60</span><h1>כל הדרך<br />אל <em>הים.</em></h1></div>
         <div className="fish-scene" aria-hidden="true"><span className="bubble bubble-one" /><span className="bubble bubble-two" /><span className="bubble bubble-three" /><img className="tuna" src="/tuna.png" alt="" /></div>
       </div><div className="wave-line" aria-hidden="true" />
     </section>
     <section className="topics-section" id="topics">
-      <div className="topic-grid">{TOPICS.map((item) => { const stats = topicStats[item.id]; return <article className="topic-card" key={item.id} style={{ "--accent": item.accent } as React.CSSProperties}><div className="topic-top"><span className="topic-number">{item.number}</span><span className="topic-count">{stats.total} שאלות</span></div><div><h3 dir="auto">{item.name}</h3><p>{item.description}</p></div><div className="topic-progress"><div><span>התקדמות</span><b>{stats.answered}/{stats.total}</b></div><div className="mini-track"><span style={{ width: `${(stats.answered / stats.total) * 100}%` }} /></div></div><button className="topic-button" onClick={() => start(item.id)}>התחלת תרגול <span>←</span></button></article>; })}</div>
+      <div className="topic-grid">{TOPICS.map((item) => { const stats = topicStats[item.id]; return <article className="topic-card" key={item.id} style={{ "--accent": item.accent } as React.CSSProperties}><div className="topic-top"><span className="topic-number">{item.number}</span><span className="topic-count">{stats.total} שאלות</span></div><span className="topic-exam-badge">משיט {item.exam}</span><div><h3 dir="auto">{item.name}</h3><p>{item.description}</p></div><div className="topic-progress"><div><span>התקדמות</span><b>{stats.answered}/{stats.total}</b></div><div className="mini-track"><span style={{ width: `${(stats.answered / stats.total) * 100}%` }} /></div></div><button className="topic-button" onClick={() => start(item.id)}>התחלת תרגול <span>←</span></button></article>; })}</div>
     </section>
   </main>;
 }
